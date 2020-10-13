@@ -1,5 +1,6 @@
-/*
-Step 1.8
-   - Create thread safe singleton class called Tile, implements BoardItem
-   - override property Icon.Tile, canwalkon = true
- */
+object Tile : BoardItem {
+    override val icon: Icon
+        get() = Icon.TILE
+    override val canWalkOn: Boolean
+        get() = true
+}

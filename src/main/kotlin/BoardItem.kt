@@ -1,5 +1,5 @@
-/*
-Step 1.2
-   - Create interface called BoardItem
-   - Has two properties icon and canWalkOn(default value set to false )
- */
+interface BoardItem {
+    val icon: Icon
+    val canWalkOn: Boolean
+        get() = false
+}
