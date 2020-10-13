@@ -1,3 +1,5 @@
+import exceptions.InvalidMoveException
+
 class Board private constructor(
     private val boardTiles: Array<Array<BoardItem>>,
     private val size: Int,
@@ -70,6 +72,39 @@ class Board private constructor(
         println("YOU HAVE NO MOVES LEFT 😭")
         println()
         println("FINAL SCORE: ${avatar.totalPoints}!")
+    }
+
+    fun tryMove(direction: String?) {
+        val x = avatar.location.x
+        val y = avatar.location.y
+        when (direction) {
+            "W" -> movePlayer(Position(x - 1, y))
+            "S" -> movePlayer(Position(x + 1, y))
+            "A" -> movePlayer(Position(x, y - 1))
+            "D" -> movePlayer(Position(x, y + 1))
+            else -> throw InvalidMoveException("Invalid Move entered: $direction")
+        }
+    }
+
+    private fun movePlayer(position: Position) {
+
+        if (boardTiles[position.x][position.y].canWalkOn) {
+            collectCoin(position)
+
+            boardTiles[avatar.location.x][avatar.location.y] = Tile
+            avatar.location = position
+            boardTiles[position.x][position.y] = avatar
+        }
+        moves -= 1
+
+    }
+
+    private fun collectCoin(position: Position) {
+        val cell = boardTiles[position.x][position.y]
+        if (cell is Coin) {
+            moves += cell.extraMoves
+            avatar.totalPoints += cell.points
+        }
     }
 
     fun hasMovesLeft(): Boolean {
